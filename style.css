@@ -129,6 +129,7 @@ p:not([class]) {
 	opacity: 0.7;
 	max-width: 32ch;
 }
+
 p[data-width='wide'] {
 	max-width: 42ch;
 }
@@ -153,6 +154,10 @@ p[data-width='wide'] {
 .button[data-type='inverted'] {
 	background-color: var(--clr-neutral-100);
 	color: var(--clr-accent-400);
+}
+
+.button[data-shadow='none'] {
+	box-shadow: none;
 }
 
 .button:hover,
@@ -251,6 +256,182 @@ p[data-width='wide'] {
 	}
 }
 
+/* footer */
+
+.primary-footer {
+	--logo-color: var(--clr-neutral-100);
+}
+
+.primary-footer-wrapper {
+	display: grid;
+	gap: var(--size-700);
+	grid-template-areas: 'form' 'nav' 'logo-social';
+}
+
+.primary-footer-logo-social {
+	grid-area: logo-social;
+
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: center;
+	gap: var(--size-700);
+}
+
+.primary-footer-nav {
+	grid-area: nav;
+}
+
+.primary-footer-form {
+	grid-area: form;
+
+	display: grid;
+	align-content: space-between;
+}
+
+.primary-footer form {
+	display: flex;
+	gap: var(--size-200);
+}
+
+input:where([type='text'], [type='email'], ) {
+	border-radius: 100vw;
+	border: 0;
+	padding: var(--size-300) var(--size-400);
+}
+@media (min-width: 50em) {
+	.primary-footer-wrapper {
+		grid-template-areas: 'logo-social nav form';
+	}
+
+	.primary-footer-logo-social {
+		align-items: flex-start;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: var(--size-700);
+	}
+}
+
+@media (max-width: 50em) {
+	.primary-footer-wrapper > * {
+		margin-inline: auto;
+	}
+}
+
+/* footer navigation */
+
+.footer-nav {
+	columns: 2;
+	gap: clamp(var(--size-200), 30vw, var(--size-900));
+}
+.footer-nav a {
+	color: var(--clr-neutral-100);
+	text-decoration: none;
+}
+
+.footer-nav a:is(:hover, :focus) {
+	color: var(--clr-accent-400);
+}
+
+/* social list */
+
+.social-list {
+	display: flex;
+	gap: var(--size-600);
+}
+
+.social-icon {
+	width: var(--size-600);
+	aspect-ratio: 1;
+	fill: var(--clr-neutral-100);
+}
+
+.social-list a:is(:hover, :focus) .social-icon {
+	fill: var(--clr-accent-400);
+}
+
+@media (min-width: 50em) {
+	.social-list {
+		gap: var(--size-300);
+	}
+	.social-icon {
+		width: var(--size-500);
+	}
+}
+/* cta */
+
+.cta {
+	position: relative;
+	isolation: isolate;
+	text-align: center;
+}
+
+@media (min-width: 50em) {
+	.cta {
+		text-align: left;
+	}
+}
+
+.cta::before {
+	content: '';
+	position: absolute;
+	z-index: -1;
+	inset: 0;
+	background-image: url('images/bg-tablet-pattern.svg'),
+		url('images/bg-tablet-pattern.svg');
+	background-position: -15rem -5rem, 80rem -42rem;
+	background-repeat: no-repeat;
+	opacity: 0.1;
+}
+
+/* numbered items */
+
+.numbered-items {
+	counter-reset: count;
+}
+
+.numbered-items li {
+	counter-increment: count;
+}
+
+.numbered-items div {
+	display: grid;
+	position: relative;
+	align-items: center;
+	column-gap: var(--size-400);
+	grid-template-columns: min-content 1fr;
+}
+
+.numbered-items_title::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	border-radius: 100vw;
+	inset: 0 -100vw 0 0;
+	grid-column: 1/-1;
+	grid-row: 1/2;
+	background: orange;
+}
+
+.numbered-items_body {
+	grid-column: 1 / -1;
+}
+
+@media (min-width: 50em) {
+	.numbered-items_body {
+		grid-column: 2 / -1;
+	}
+}
+
+.numbered-items div::before {
+	content: '0' counter(count);
+	background-color: var(--clr-accent-400);
+	color: var(--clr-neutral-100);
+	font-weight: var(--fw-bold);
+	padding: var(--size-200) var(--size-500);
+	border-radius: 100vw;
+}
+
 /* Utility classes */
 
 .visually-hidden {
@@ -273,12 +454,6 @@ p[data-width='wide'] {
 	margin-inline: auto;
 }
 
-.flow * + * {
-	/* adds styling to children of div with this class, but not first element */
-	/* could also do where:.flow :not(first-child) { */
-	margin-top: var(--flow-spacer, 4em);
-}
-
 .even-columns {
 	display: grid;
 	gap: 1rem;
@@ -289,6 +464,21 @@ p[data-width='wide'] {
 		grid-auto-flow: column;
 		grid-auto-columns: 1fr;
 	}
+}
+.vertical-align-center {
+	align-items: center;
+}
+
+.justify-self-end {
+	justify-self: end;
+}
+@media (min-width: 50em) {
+	.justify-self-end-md {
+		justify-self: end;
+	}
+}
+:where(.flow :not(:first-child)) {
+	margin-top: var(--flow-spacer, 3em);
 }
 
 .text-primary-400 {
@@ -335,7 +525,7 @@ p[data-width='wide'] {
 
 .fs-primary-heading {
 	font-size: var(--fs-primary-heading);
-	line-height: 1.2;
+	line-height: 1.1;
 }
 .fs-secondary-heading {
 	font-size: var(--fs-secondary-heading);
